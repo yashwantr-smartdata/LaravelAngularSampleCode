@@ -1,6 +1,5 @@
 <?php
 namespace App\Http\Controllers\API;
-
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -30,9 +29,8 @@ class UserController extends Controller
 
     /**
     * Construction function
-    *
-    * @return 
-    *
+    * @param $request(Array), $Client(Object)
+    * @return
     * Created By: Yashwant Rautela
     * Created At: 19July2019 
     */
@@ -48,8 +46,8 @@ class UserController extends Controller
 
     /**
     * API Function to Authenticate User through Google Social Login
-    *
-    * @return status, token, message
+    * @param $userRepository(Repository Interface)
+    * @return Json response(status, token, message)
     * Created By: Yashwant Rautela
     * Created At: 24July2019 
     */
@@ -122,8 +120,8 @@ class UserController extends Controller
 
     /**
     * API Function to Authenticate User through Facebook Social Login
-    *
-    * @return status, token, message
+    * @param $userRepository(Repository Interface)
+    * @return Json response(status, token, data, message)
     * Created By: Yashwant Rautela
     * Created At: 25July2019 
     */
@@ -198,8 +196,8 @@ class UserController extends Controller
 
     /**
     * API Function to Authenticate User
-    *
-    * @return status, token, message
+    * @param $UserRepository(Repository Interface)
+    * @return Json response(status, message)
     * Created By: Yashwant Rautela
     * Created At: 19July2019 
     */
@@ -258,10 +256,11 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Function to Display the specified resource.
+     * @param $request(Array)
+     * @return Json response(status, message)
+     * Created By: Yashwant Rautela
+     * Created At: 19July2019 
      */
     public function show(Request $request)
     {
@@ -303,10 +302,11 @@ class UserController extends Controller
     }
 
     /**
-    * 
+    * API for forgot password functionality
+    * @param $request(Array), $userRepository(Repository Interface)
+    * @return Json response(status, message)
     * Created By: Aman Jain
-    * Created At: 24July2019 
-    * para:- email
+    * Created At: 24July2019
     */
 
     public function forgotPassword(Request $request, UserRepository $userRepository) {
@@ -362,9 +362,10 @@ class UserController extends Controller
 
     /**
     * Function to recover account
+    * @param $request(Array)
+    * @return Json response(status, message)
     * Created By: Aman Jain
-    * Created At: 24July2019 
-    * para:- password_confirmation,password,token
+    * Created At: 24July2019
     */
 
     public function recoverAccount(Request $request) {
@@ -411,9 +412,10 @@ class UserController extends Controller
 
     /**
     * Function to change password
+    * @param $request(Array)
+    * @return Json response(status, message)
     * Created By: Aman Jain
-    * Created At: 24July2019 
-    * para:- password_confirmation,password,current,id
+    * Created At: 24July2019
     */
 
     public function changePassword(Request $request) {
@@ -460,9 +462,10 @@ class UserController extends Controller
      
     /**
     * Function to send verification code
+    * @param $request(Array)
+    * @return Json response(status, message)
     * Created By: Aman Jain
-    * Created At: 25July2019 
-    * para:- email,password
+    * Created At: 25July2019
     */
 
     public function sendVerify(Request $request) {
@@ -513,6 +516,8 @@ class UserController extends Controller
 
     /**
     * Function to verify user account
+    * @param $request(Array)
+    * @return Json response(status, message)
     * Created By: Aman Jain
     * Created At: 25July2019 
     * para:- token
@@ -565,9 +570,10 @@ class UserController extends Controller
 
     /**
     * Function to upload document
+    * @param $request(Array)
+    * @return Json response(status, message, images)
     * Created By: Aman Jain
-    * Created At: 25July2019 
-    * para:- myfile,user_id
+    * Created At: 25July2019
     */
 
     public function documentUpload(Request $request) {
@@ -618,12 +624,12 @@ class UserController extends Controller
     
     /**
     * API Function to Update Admin Details
-    *
-    * @return status, data, message
+    * @param $request(Array), $userRepository(Repository Interface)
+    * @return Json response(status, message)
     * Created By: Pankaj Joshi
     * Created At: 20July2019 
     */
-    public function updateAdminData(UserRepository $userRepository, Request $request) {
+    public function updateAdminData(UserRepository $userRepository) {
         try{
 
             $validator = Validator::make($this->request->all(), [
@@ -631,7 +637,6 @@ class UserController extends Controller
                 'first_name' => 'required',
                 'last_name' => 'required',
                 'mobile_number' => 'required'
-                
             ]);
 
             if ($validator->fails()) {
@@ -662,6 +667,13 @@ class UserController extends Controller
         }
     }
 
+    /**
+    * API Function to upload document
+    * @param $request(Array)
+    * @return Json response(status, message, images)
+    * Created By: Pankaj Joshi
+    * Created At: 20July2019 
+    */
     public function uploadDocument(Request $request)
     {
         try{
@@ -713,8 +725,8 @@ class UserController extends Controller
 
     /**
     * API Function to Update User Profile
-    *
-    * @return status, data, message
+    * @param $request(Array), $userRepository(Repository Interface)
+    * @return Json response(status, message)
     * Created By: Ram Krishna Murthy
     * Created At: 12August2019 
     */
@@ -772,8 +784,8 @@ class UserController extends Controller
 
     /**
     * API Function to Add or Update User Profile Image
-    *
-    * @return file, id
+    * @param $request(Array), $userRepository(Repository Interface)
+    * @return Json response(status, message, data, image_path)
     * Created By: Yashwant Rautela
     * Created At: 19August2019 
     */
