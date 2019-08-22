@@ -1,10 +1,5 @@
 <?php
-
-//namespace App\Services;
-
 namespace App\Http\Controllers\API;
-
-// require '../vendor/autoload.php';
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -22,7 +17,6 @@ use Mail;
 use App\Mail\ForgotPassword;
 use App\Mail\Verification;
 use Illuminate\Support\Facades\Crypt;
-// use Twilio\Rest\Client;
 use App\MobileVerification;
 use App\Country;
 use DB;
@@ -76,11 +70,8 @@ class UserController extends Controller
                 # code...
                 throw new Exception("Required parameter missing", 1);
             }
-            
 
             $user = $userRepository->getData(['email'=>$this->request->email],'first',[],0);
-
-
 
             if(!isset($user)){
                 $password = $this->request->firstName.'@12345';
@@ -267,36 +258,6 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(){
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -317,7 +278,6 @@ class UserController extends Controller
                                 ], 200);
             }
 
-            // $user = $userRepository->getData(['id'=>$this->request->id],'first',[], 0);
             $user = User::where('id', $request->id)->first();
             if (empty($user)) {
                 return response()->json([
@@ -343,41 +303,6 @@ class UserController extends Controller
        }
 
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Rse()->json([emove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     /**
     * 
@@ -406,9 +331,7 @@ class UserController extends Controller
             }
             $token = md5(uniqid() . mt_rand(999, 99999));
             $forgot_password = PasswordReset::insert(['email' => $request->email, 'token' => $token]);
-
-            $url="http://www.stormboardz.ca/reset-password/";
-            //$url= env('APP_URL')."/reset-password/";
+            $url= env('APP_URL')."/reset-password/";
             if ($user->save()) {
                 $data = ['token' => $token, 'recoverUrl' => $url.$token, 'name' => $user->first_name, 'email' => $user->email];
                 try {
@@ -438,58 +361,9 @@ class UserController extends Controller
             ], 200);
         }
     }
-    // public function forgotPassword(Request $request, UserRepository $userRepository) {
-    //     /**
-    //      * Validating data
-    //      */
-    //     $validator = Validator::make($request->all(), [
-    //                 'email' => ['required', 'email']
-    //     ]);
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //                     'requestStatus' => 'invalid',
-    //                     'message' => implode('<br />', $validator->errors()->all())
-    //                         ], 422);
-    //     }
-    //     // $user = User::where('email', $request->email)->first();
-    //     $user = $userRepository->getData([],'first',[], 0);
-
-        
-        
-    //     if (empty($user->id)) {
-    //         return response()->json([
-    //             'requestStatus' => 'invalid',
-    //             'message' => 'Email address is not registered!'
-    //         ], 422);
-    //     }
-    //     $token = md5(uniqid() . mt_rand(999, 99999));
-    //     //$user->forgot_password_token = $token;
-    //     $forgot_password = PasswordReset::insert(['email' => $request->email, 'token' => $token]);
-    //     $url = "http://localhost:8000/api/recover_account?token=";
-    //     if ($user->save()) {
-    //         $data = ['token' => $token, 'recoverUrl' => $url.$token, 'name' => $user->first_name, 'email' => $user->email];
-    //         try {
-    //             Mail::to($request->email)->send(new ForgotPassword($data));
-    //         } catch (\Exception $e) {
-    //             return response()->json([
-    //                 'requestStatus' => 'invaild',
-    //                 'message' => $e
-    //             ]);   
-    //         }
-    //         return response()->json([
-    //                     'requestStatus' => 'success',
-    //                     'message' => 'An email has been sent to you for recovering account!'
-    //         ]);
-    //     } else {
-    //         return response()->json([
-    //                     'requestStatus' => 'error',
-    //                     'message' => 'Something went wrong, not able to process forgot password request!'
-    //                         ], 500);
-    //     }
-    // }
 
     /**
-    * 
+    * Function to recover account
     * Created By: Aman Jain
     * Created At: 24July2019 
     * para:- password_confirmation,password,token
@@ -538,7 +412,7 @@ class UserController extends Controller
     }
 
     /**
-    * 
+    * Function to change password
     * Created By: Aman Jain
     * Created At: 24July2019 
     * para:- password_confirmation,password,current,id
@@ -587,7 +461,7 @@ class UserController extends Controller
     } 
      
     /**
-    * 
+    * Function to send verification code
     * Created By: Aman Jain
     * Created At: 25July2019 
     * para:- email,password
@@ -612,8 +486,7 @@ class UserController extends Controller
                 ], 200);
             }
             $token = encrypt($request->email);
-            $url = "http://www.stormboardz.ca/api/verify?token=";
-            //$url = env('APP_URL')."/api/verify?token=";
+            $url = env('APP_URL');
             $data = ['token' => $token, 'recoverUrl' => $url.$token, 'name' => $user->first_name, 'email' => $user->email];  
             
             try {
@@ -641,7 +514,7 @@ class UserController extends Controller
     }
 
     /**
-    * 
+    * Function to verify user account
     * Created By: Aman Jain
     * Created At: 25July2019 
     * para:- token
@@ -693,7 +566,7 @@ class UserController extends Controller
     }
 
     /**
-    * 
+    * Function to upload document
     * Created By: Aman Jain
     * Created At: 25July2019 
     * para:- myfile,user_id
@@ -922,22 +795,14 @@ class UserController extends Controller
             $userData = $userRepository->getData(['id' => $request->user_id], 'first',[],0);
 
             if (!empty($userData['photo_url'])) {
-                # code...
-                // die($this->profile_picture_upload_path.$userData['photo_url']);
-                
                 if(file_exists(public_path($this->profile_picture_upload_path.$userData['photo_url']))) {
                     unlink(public_path($this->profile_picture_upload_path.$userData['photo_url']));
                 }
-                // File::delete($this->profile_picture_upload_path.$userData['photo_url']);
             }
 
             $file = $request->file('photo_url');
-
             $file_title = $file->getClientOriginalName();
-
             $file_title = str_replace(" ","",$file_title);
-
-            // $file_name = strtotime(Carbon::now()).'.'.$file->getClientOriginalExtension();
             $file_name = strtotime(Carbon::now()).'_'.$file_title;
 
             $file->move(public_path($this->profile_picture_upload_path), $file_name);
