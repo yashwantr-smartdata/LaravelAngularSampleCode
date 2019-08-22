@@ -13,8 +13,7 @@ use App\User;
 |
 */
 
-Route::middleware('auth:api')->resource('users','API\UserController');
-
+//User authentication
 Route::post('/user/login','API\UserController@authenticateUser');
 
 
@@ -32,6 +31,7 @@ Route::post('/user/socialLoginFb','API\UserController@socialLoginWithFb');
 // Get Items detail
 Route::post('/customer/item_details','API\ItemsController@item_details');
 
+//Passport Auth:API middleware
 Route::middleware('auth:api')->group(function () {
 	// Save customer information
 	Route::post('/customer/save_customer','API\CustomerController@save_customer');\
