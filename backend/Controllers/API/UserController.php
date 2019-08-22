@@ -265,8 +265,6 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        //
-
         try{
             $validator = Validator::make($request->all(), [
                         'id' => ['required']
@@ -617,7 +615,8 @@ class UserController extends Controller
             ], 200);
         } 
     }
-      /**
+    
+    /**
     * API Function to Update Admin Details
     *
     * @return status, data, message
